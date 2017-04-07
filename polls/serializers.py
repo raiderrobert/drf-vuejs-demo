@@ -23,4 +23,4 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Question
-        fields = '__all__'
+        fields = ('id', 'pub_date', 'choices', 'question_text', 'url')

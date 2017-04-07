@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+
+    <script src="http://unpkg.com/vue/dist/vue.js"></script>
+    <script src="http://cdn.jsdelivr.net/vue.resource/1.3.0/vue-resource.min.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <div class="container">
+    <ul class="collapsible" data-collapsible="accordion">
+        <li v-for="poll in polls">
+            <div class="collapsible-header">${ poll.question_text }</div>
+            <div class="collapsible-body">
+
+                <div class="collection" v-for="choice in poll.choices">
+                    <a href="#!" v-on:click="postVote" :p-id="poll.id" :c-id="choice.id" class="collection-item">
+                        <span class="new badge" data-badge-caption="votes" style="margin-top: calc(.75rem - 11px)">${ choice.votes }</span>
+                        ${ choice.choice_text }
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+  </div>
+
+</div>
+<script>
+    var app = new Vue({
+        delimiters: ['${', '}'],
+        el: '#app',
+        data: {
+            polls: [],
+            loading: true
+        },
+        http: {
+            root: 'http://localhost:8000/api',
+            headers: {
+              Authorization: 'Token d42b9fce3d06c015a6c043570b30aa6fa791fdeb'
+            }
+        },
+        methods: {
+            getList: function () {
+                this.$http.get('questions/').then(function (data) {
+                    console.log(data.body.results);
+                    this.polls = data.body.results;
+                    this.loading = false;
+                })
+            },
+            postVote: function (event) {
+                var qID = event.target.getAttribute("p-id");
+                var cID = event.target.getAttribute("c-id");
+                this.$http.post('questions/'+qID+'/vote/', {'id': cID}).then(function (response) {
+
+                    var choice = this.polls[qID-1].choices.filter(function ( obj ) {
+                        return parseInt(obj.id) === parseInt(cID);
+                    })[0];
+
+                    choice.votes = response.data.votes;
+                })
+            }
+        },
+        mounted: function () {
+            this.getList();
+        }
+    })
+</script>
+</body>
+</html>
