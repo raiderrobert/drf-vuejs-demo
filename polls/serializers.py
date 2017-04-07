@@ -9,7 +9,8 @@ class ChoiceSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ChoiceIDSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    id = serializers.IntegerField(help_text="ID of your vote choice.")
+
 
 class NestedChoiceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

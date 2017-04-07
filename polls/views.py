@@ -13,8 +13,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
-    @detail_route(methods=['post'])
+    @detail_route(methods=['post'], serializer_class=ChoiceIDSerializer)
     def vote(self, request, pk=None):
+        """
+        API endpoint to vote on an choice
+        """
 
         serializer = ChoiceIDSerializer(data=request.data)
         if serializer.is_valid():
@@ -23,11 +26,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 choice.votes = choice.votes + 1
                 choice.save()
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'id': choice.id, 'votes': choice.votes}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 class ChoiceViewSet(viewsets.ModelViewSet):
     """
