@@ -2,7 +2,7 @@ from rest_framework.response import Response
 
 from .models import Question, Choice
 from rest_framework import viewsets, status
-from .serializers import QuestionSerializer, ChoiceSerializer, ChoiceIDSerializer
+from .serializers import QuestionSerializer, ChoiceIDSerializer
 from rest_framework.decorators import detail_route
 
 
@@ -30,10 +30,3 @@ class QuestionViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class ChoiceViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows choices to be viewed or edited.
-    """
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer
