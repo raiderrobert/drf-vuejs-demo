@@ -1,9 +1,10 @@
 from rest_framework.response import Response
+from rest_framework import viewsets, status
+from rest_framework.decorators import detail_route
+from rest_framework.filters import SearchFilter
 
 from .models import Question, Choice
-from rest_framework import viewsets, status
 from .serializers import QuestionSerializer, ChoiceIDSerializer
-from rest_framework.decorators import detail_route
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -12,6 +13,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    filter_backends = (SearchFilter, )
+    search_fields = ('question_text', )
 
     @detail_route(methods=['post'], serializer_class=ChoiceIDSerializer)
     def vote(self, request, pk=None):

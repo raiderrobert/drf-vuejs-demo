@@ -1,3 +1,5 @@
 django
 djangorestframework
+django-filter
 coreapi
+django-crispy-forms
