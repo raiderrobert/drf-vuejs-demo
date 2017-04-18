@@ -51,7 +51,6 @@
         methods: {
             getList: function () {
                 this.$http.get('questions/').then(function (data) {
-                    console.log(data.body.results);
                     this.polls = data.body.results;
                     this.loading = false;
                 })

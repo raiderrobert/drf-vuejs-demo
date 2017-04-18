@@ -5,7 +5,7 @@ from .models import Choice, Question
 
 class ChoiceInline(admin.StackedInline):
     model = Choice
-    extra = 3
+    extra = 0
 
 
 class QuestionAdmin(admin.ModelAdmin):
