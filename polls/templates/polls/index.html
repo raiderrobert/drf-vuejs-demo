@@ -16,17 +16,16 @@
 </head>
 <body>
 <div id="app">
-
   <div class="container">
     <ul class="collapsible" data-collapsible="accordion">
         <li v-for="poll in polls">
-            <div class="collapsible-header">${ poll.question_text }</div>
+            <div class="collapsible-header">[[ poll.question_text ]]</div>
             <div class="collapsible-body">
 
                 <div class="collection" v-for="choice in poll.choices">
                     <a href="#!" v-on:click="postVote" :p-id="poll.id" :c-id="choice.id" class="collection-item">
-                        <span class="new badge" data-badge-caption="votes" style="margin-top: calc(.75rem - 11px)">${ choice.votes }</span>
-                        ${ choice.choice_text }
+                        <span class="new badge" data-badge-caption="votes" style="margin-top: calc(.75rem - 11px)">[[ choice.votes ]]</span>
+                        [[ choice.choice_text ]]
                     </a>
                 </div>
             </div>
@@ -37,7 +36,7 @@
 </div>
 <script>
     var app = new Vue({
-        delimiters: ['${', '}'],
+        delimiters: ['[[', ']]'],
         el: '#app',
         data: {
             polls: [],
